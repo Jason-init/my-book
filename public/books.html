@@ -154,12 +154,13 @@
           handler: async function() {
             //Edit books
             if (this.flag) {
-              this.books.forEach(item => {
-                if (item.id == this.id) {
-                  item.name = this.name
-                  this.flag = false
-                }
+              let ret = await axios.put('books/' + this.id, {
+                name: this.name
               })
+              if (ret.status === 200) {
+                this.queryData()
+              }
+              this.flag = false
 
               //Add books
             } else {
@@ -194,13 +195,11 @@
           //             }
           //         })
           //     }
-          toEdit: function(id) {
+          toEdit: async function(id) {
             this.flag = true
-            let books = this.books.filter(item => {
-              return item.id == id
-            })
-            this.id = books[0].id
-            this.name = books[0].name
+            let ret = await axios.get('books/' + id)
+            this.id = ret.id
+            this.name = ret.name
           },
           // toDelete: function(id) {
           //     this.books = this.books.filter(item => {
