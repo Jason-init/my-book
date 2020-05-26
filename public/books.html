@@ -206,11 +206,11 @@
           //         return item.id != id
           //     })
           // }
-          toDelete: function(id) {
-            let index = this.books.findIndex(function(item) {
-              return item.id == id
-            })
-            this.books.splice(index, 1)
+          toDelete: async function(id) {
+            let ret = await axios.delete('books/' + id)
+            if (ret.status === 200) {
+              this.queryData()
+            }
           },
 
           queryData: async function() {
