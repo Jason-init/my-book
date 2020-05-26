@@ -275,13 +275,11 @@
           }
         },
         watch: {
-          name: function(val) {
-            let flag = this.books.some(item => {
-              return item.name == val
-            })
-            if (flag) {
+          name: async function(val) {
+            let ret = await axios.get('books/book/' + this.name)
+            if (ret.status === 1) {
               this.submitDisabled = true
-            } else {
+            } else if (ret.status === 2) {
               this.submitDisabled = false
             }
           }
